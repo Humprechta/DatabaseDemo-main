@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using WebStore.Assignments;
+using WebStore.Data;
 using WebStore.Entities;
 
 namespace WebStore
@@ -9,9 +10,18 @@ namespace WebStore
     {
         static async Task Main(string[] args)
         {
-            
 
-            using var context = new WebStoreContext();
+            /*string connectionString = "Host=localhost;Port=5432;Database=assignment_orm_3;Username=postgres;Password=admin1234567810";
+
+            // Vytvoření DbContextOptions
+            var optionsBuilder = new DbContextOptionsBuilder<AssignmentOrm3Context>();
+            optionsBuilder.UseNpgsql(connectionString);*/
+
+            // Vytvoření instance WebStoreContext s DbContextOptions
+            using var context = new AssignmentOrm3Context();
+
+            // Vytvoření instance LinqQueriesAssignment
+            var assignments = new LinqQueriesAssignment(context);
 
 
             var Assigments = new LinqQueriesAssignment(context);

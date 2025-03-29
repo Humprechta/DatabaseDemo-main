@@ -3,7 +3,7 @@ using WebStore.Entities;
 
 namespace WebStore.Data
 {
-    public class WebStoreContext : DbContext
+    /*public class WebStoreContext : DbContext
     {
         // DbSets for each table
         public DbSet<Customer> Customers => Set<Customer>();
@@ -118,5 +118,5 @@ namespace WebStore.Data
 
             // Optional: You can also override table names, column types, indexes, etc. 
         }
-    }
+    }*/
 }
