@@ -128,23 +128,23 @@ namespace WebStore.Assignments
             //       (oi.UnitPrice * oi.Quantity) - oi.Discount
             Console.WriteLine(" ");
             var pendingOrders = await _dbContext.Orders
-                .Where(o => o.OrderStatus == "Pending")
-                .Include(o => o.Customer)
-                .Include(o => o.OrderItems)
-                .ThenInclude(oi => oi.Product)
-                .Select(o => new
+                .Where(o => o.OrderStatus == "Pending") //equivalent to SQL WHERE order_status = "Pending"
+                .Include(o => o.Customer) //equivalent to SQL join with Customer (JOIN customers ON orders.customer_id = customers.customer_id) 
+                .Include(o => o.OrderItems) //equivalent to SQL join with order_items
+                .ThenInclude(oi => oi.Product) //on every founded Order will try to found related product
+                .Select(o => new //select data to new object with selected fields from the query
                 {
-                    o.OrderId,
-                    CustomerName = o.Customer.FirstName + " " + o.Customer.LastName,
-                    o.OrderDate,
-                    TotalPrice = o.OrderItems.Sum(oi => (oi.UnitPrice * oi.Quantity) - oi.Discount)
+                    o.OrderId, //retrun OrderId
+                    CustomerName = o.Customer.FirstName + " " + o.Customer.LastName, // retrun o.Customer.FirstName + " " + o.Customer.LastName
+                    o.OrderDate, //retrun date
+                    TotalPrice = o.OrderItems.Sum(oi => (oi.UnitPrice * oi.Quantity) - oi.Discount) //calculate total price
                 })
-                .ToListAsync();
+                .ToListAsync(); //we need async becouse its not instant to fetch data, and wee need to wait for results
 
-                Console.WriteLine("\n=== Task 04: List Pending Orders With Total Price ===");
-                foreach (var o in pendingOrders)
-                {
-                    Console.WriteLine($"Order {o.OrderId} - {o.CustomerName} - Date: {o.OrderDate} - Total: ${o.TotalPrice}");
+            Console.WriteLine("\n=== Task 04: List Pending Orders With Total Price ===");
+            foreach (var o in pendingOrders) // Print every Order.
+            {
+                Console.WriteLine($"Order {o.OrderId} - {o.CustomerName} - Date: {o.OrderDate} - Total: ${o.TotalPrice}");
             }
         }
 
