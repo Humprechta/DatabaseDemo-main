@@ -228,20 +228,22 @@ namespace WebStore.Assignments
             //       Output ID, date, and the customer's name.
             Console.WriteLine(" ");
             var recentOrders = await _dbContext.Orders
-                .Where(o => o.OrderDate >= DateTime.Now.AddDays(-30))
+                .Where(o => o.OrderDate >= DateTime.Now.AddDays(-90))
                 .Include(o => o.Customer)
                 .Select(o => new
                 {
                     o.OrderId,
                     o.OrderDate,
-                    CustomerName = o.Customer.FirstName + " " + o.Customer.LastName
+                    CustomerName = o.Customer.FirstName + " " + o.Customer.LastName,
+                    o.OrderStatus,
+                    o.DeliveredDate
                 })
                 .ToListAsync();
 
                 Console.WriteLine("\n=== Task 07: Recent Orders ===");
                 foreach (var o in recentOrders)
                 {
-                    Console.WriteLine($"Order {o.OrderId} - {o.CustomerName} - Date: {o.OrderDate}");
+                    Console.WriteLine($"Order {o.OrderId} - {o.CustomerName} - Date: {o.OrderDate} - Status: {o.OrderStatus} - Delibery Date: {o.DeliveredDate}");
                 }
         }
 
